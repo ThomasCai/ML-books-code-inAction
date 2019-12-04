@@ -40,5 +40,5 @@ print(train_images.shape)
 print(train_images.dtype)
 
 digit = train_images[4]
-plt.inshow(digit, cmap=plt.cm.binary)
+plt.imshow(digit, cmap=plt.cm.binary)
 plt.show()
