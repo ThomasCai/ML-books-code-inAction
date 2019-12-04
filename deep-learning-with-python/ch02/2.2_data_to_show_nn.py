@@ -1,4 +1,6 @@
 import numpy as np
+from keras.datasets import mnist
+import matplotlib.pyplot as plt
 
 
 # 标量（0D张量）
@@ -30,3 +32,13 @@ x4 = np.array([[[5, 78, 2, 34, 0],
                 [7, 80, 4, 36, 2]]])
 print(x4)
 print(x4.ndim)
+
+# 显示图片
+(train_images, train_labels), (test_images, test_labels) = mnist.load_data() # 如果失败，参照readme第二章
+print(train_images.ndim)
+print(train_images.shape)
+print(train_images.dtype)
+
+digit = train_images[4]
+plt.inshow(digit, cmap=plt.cm.binary)
+plt.show()
