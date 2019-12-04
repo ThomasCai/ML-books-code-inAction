@@ -46,6 +46,7 @@ $ python train_nueralnet.py
 ## 注意事项
 ### 1. 第二章
 
+#### 1.1 下载报错
 下载mnist数据集时，若无法连接，且报如下错误,则手动下载，然后修改程序：
 
 > Exception: URL fetch failure on https://s3.amazonaws.com/img-datasets/mnist.npz : None -- [Errno 104] Connection reset by peer
@@ -65,3 +66,6 @@ def load_data(path="MNIST_data/mnist.npz"):
     f.close()
     return (x_train, y_train), (x_test, y_test)
 ```
+#### 1.2 下载成功
+
+对于ubuntu，数据集下载位置：`~/.keras/datasets/`
