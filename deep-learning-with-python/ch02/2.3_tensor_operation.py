@@ -23,8 +23,10 @@ def naive_add(x, y):
             x[i, j] += y[i, j]
     return x
 
-z = x + y  # 等价于naive_add 逐元素相加
-z = np.maximum(z, 0.)  # 等价于naive_relu 逐元素的relu
+def relu_add(x, y):
+    z = x + y  # 等价于naive_add 逐元素相加
+    z = np.maximum(z, 0.)  # 等价于naive_relu 逐元素的relu
+    return z
 
 # 2.3.2 广播
 def naive_add_matrix_and_vector(x, y):
@@ -42,7 +44,9 @@ y = np.random.random((32, 10)) # y 是形状为(32, 10) 的随机张量
 z = np.maximum(x, y) # 输出z 的形状是(64, 3, 32, 10)，与x 相同
 
 # 2.3.3 张量点积
-z = np.dot(x, y) # z = x·y
+def dot(x, y):
+    z = np.dot(x, y) # z = x·y
+    return z
 
 # 点积的实现细节-两个向量的实现
 def naive_vector_dot(x, y):

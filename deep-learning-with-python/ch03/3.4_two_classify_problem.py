@@ -6,8 +6,8 @@ import matplotlib.pyplot as plt
 
 
 # 设置第一次运行或第二次运行
-the_first_time = True
-the_second_time = False
+the_first_time = False
+the_second_time = True
 
 # 3.4.1 加载数据
 (train_data, train_labels), (test_data, test_labels) = imdb.load_data(num_words=10000)
@@ -87,11 +87,12 @@ if the_first_time:
     plt.xlabel('Epochs')
     plt.ylabel('Loss')
     plt.legend()
+    plt.show()
 
     # 绘制训练精度和验证精度
     plt.clf()
-    acc = history_dict['acc']
-    val_acc = history_dict['val_acc']
+    acc = history_dict['accuracy']
+    val_acc = history_dict['val_accuracy']
     plt.plot(epochs, acc, 'bo', label='Training acc')
     plt.plot(epochs, val_acc, 'b', label='Validation acc')
     plt.title('Training and validation accuracy')

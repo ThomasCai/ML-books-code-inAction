@@ -20,11 +20,16 @@
 执行源代码需要按照以下软件。
 
 * Python 3.x
-* NumPy
-* Matplotlib
-* keras
+* numpy (1.17.4)
+* matplotlib (1.5.1)
+* Keras (2.3.1)
+* tensorflow-gpu (1.14.0)
 
 ※Python的版本为Python 3。
+
+## 环境搭建
+
+这里参照原书附录A安装Keras。
 
 ## 执行方法
 
