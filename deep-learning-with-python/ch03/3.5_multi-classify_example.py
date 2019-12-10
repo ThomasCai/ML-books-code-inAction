@@ -6,9 +6,9 @@ import matplotlib.pyplot as plt
 
 
 # 设置第一次运行或第二次运行
-the_first_time = True
+the_first_time = False
 the_second_time = False
-the_third_time = False
+the_third_time = True
 
 # 3.5.1 加载路透社数据
 (train_data, train_labels), (test_data, test_labels) = reuters.load_data(num_words=10000)
@@ -110,7 +110,7 @@ if the_second_time:
     model = models.Sequential()
     model.add(layers.Dense(64, activation='relu', input_shape=(10000,)))
     model.add(layers.Dense(64, activation='relu'))
-    model.add(layers.Dense(1, activation='softmax'))
+    model.add(layers.Dense(46, activation='softmax'))
     model.compile(optimizer='rmsprop',
                   loss='categorical_crossentropy',
                   metrics=['accuracy'])
@@ -141,7 +141,7 @@ if the_third_time:
     model = models.Sequential()
     model.add(layers.Dense(64, activation='relu', input_shape=(10000,)))
     model.add(layers.Dense(4, activation='relu'))
-    model.add(layers.Dense(1, activation='softmax'))
+    model.add(layers.Dense(46, activation='softmax'))
     model.compile(optimizer='rmsprop',
                   loss='categorical_crossentropy',
                   metrics=['accuracy'])
