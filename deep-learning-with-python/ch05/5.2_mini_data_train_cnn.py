@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 create_data_dir = True  # 创建文件夹，只需运行一次，注意路径
 the_first_exp = True  # 将猫狗分类的小型卷积神经网络实例化
 data_improve_example = True
-the_second_exp = False # 定义一个包含 dropout 的新卷积神经网络 and include data improve
+the_second_exp = False  # 定义一个包含 dropout 的新卷积神经网络 and include data improve
 
 # 原始数据集解压目录的路径
 original_dataset_dir = '/Users/fchollet/Downloads/kaggle_original_data'
@@ -81,7 +81,6 @@ if create_data_dir:
     print('total test cat images:', len(os.listdir(test_cats_dir)))
     print('total test dog images:', len(os.listdir(test_dogs_dir)))
 
-
 if the_first_exp:
     model = models.Sequential()
     model.add(layers.Conv2D(32, (3, 3), activation='relu', input_shape=(150, 150, 3)))
@@ -100,8 +99,8 @@ if the_first_exp:
     model.compile(loss='binary_crossentropy', optimizer=optimizers.RMSprop(lr=1e-4), metrics=['acc'])
 
     # 使用 ImageDataGenerator 从目录中读取图像
-    train_datagen = ImageDataGenerator(rescale=1./255)  # 将所有图像乘以 1/255 缩放
-    test_datagen = ImageDataGenerator(rescale=1./255)
+    train_datagen = ImageDataGenerator(rescale=1. / 255)  # 将所有图像乘以 1/255 缩放
+    test_datagen = ImageDataGenerator(rescale=1. / 255)
     train_generator = train_datagen.flow_from_directory(
         train_dir,
         target_size=(150, 150),
@@ -193,18 +192,18 @@ if the_second_exp:
         height_shift_range=0.2,
         shear_range=0.2,
         zoom_range=0.2,
-        horizontal_flip=True,)
+        horizontal_flip=True, )
     test_datagen = ImageDataGenerator(rescale=1. / 255)  # 注意,不能增强验证数据
     train_generator = train_datagen.flow_from_directory(
         train_dir,
-        target_size = (150, 150),
-        batch_size = 32,
-        class_mode = 'binary')
+        target_size=(150, 150),
+        batch_size=32,
+        class_mode='binary')
     validation_generator = test_datagen.flow_from_directory(
         validation_dir,
-        target_size = (150, 150),
-        batch_size = 32,
-        class_mode = 'binary')
+        target_size=(150, 150),
+        batch_size=32,
+        class_mode='binary')
     history = model.fit_generator(
         train_generator,
         steps_per_epoch=100,
