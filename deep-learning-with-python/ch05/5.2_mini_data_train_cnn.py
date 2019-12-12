@@ -130,8 +130,8 @@ if the_first_exp:
     model.save('cats_and_dogs_small_1.h5')
 
     # 绘制训练过程中的损失曲线和精度曲线
-    acc = history.history['accuracy']
-    val_acc = history.history['val_accuracy']
+    acc = history.history['acc']
+    val_acc = history.history['val_acc']
     loss = history.history['loss']
     val_loss = history.history['val_loss']
     epochs = range(1, len(acc) + 1)
@@ -216,8 +216,8 @@ if the_second_exp:
 
     # 绘制训练过程中的损失曲线和精度曲线
     plt.clf()
-    acc = history.history['accuracy']
-    val_acc = history.history['val_accuracy']
+    acc = history.history['acc']
+    val_acc = history.history['val_acc']
     loss = history.history['loss']
     val_loss = history.history['val_loss']
     epochs = range(1, len(acc) + 1)
