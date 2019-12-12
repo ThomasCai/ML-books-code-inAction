@@ -6,38 +6,40 @@ from keras.preprocessing import image  # 图像预处理工具模块
 from keras.preprocessing.image import ImageDataGenerator
 import matplotlib.pyplot as plt
 
-create_data_dir = True  # 创建文件夹，只需运行一次，注意路径
+create_data_dir = False  # 创建文件夹，只需运行一次，注意路径
 the_first_exp = True  # 将猫狗分类的小型卷积神经网络实例化
-data_improve_example = True
+data_improve_example = False
 the_second_exp = False  # 定义一个包含 dropout 的新卷积神经网络 and include data improve
 
 # 原始数据集解压目录的路径
-original_dataset_dir = '/Users/fchollet/Downloads/kaggle_original_data'
+original_dataset_dir = '/home/thomas/Downloads/keras_ch05_data/kaggle_original_data'
+original_dataset_dir = os.path.join(original_dataset_dir, 'train')
+
 # 保存较小数据集的目录
-base_dir = '/Users/fchollet/Downloads/cats_and_dogs_small'
-os.mkdir(base_dir)
+base_dir = '/home/thomas/Downloads/keras_ch05_data/cats_and_dogs_small'
 # 分别对应划分后的训练、验证和测试的目录
 train_dir = os.path.join(base_dir, 'train')
-os.mkdir(train_dir)
 validation_dir = os.path.join(base_dir, 'validation')
-os.mkdir(validation_dir)
 test_dir = os.path.join(base_dir, 'test')
-os.mkdir(test_dir)
 # 创建猫和狗的 训练、验证、训练的目录
 train_cats_dir = os.path.join(train_dir, 'cats')
-os.mkdir(train_cats_dir)
 train_dogs_dir = os.path.join(train_dir, 'dogs')
-os.mkdir(train_dogs_dir)
 validation_cats_dir = os.path.join(validation_dir, 'cats')
-os.mkdir(validation_cats_dir)
 validation_dogs_dir = os.path.join(validation_dir, 'dogs')
-os.mkdir(validation_dogs_dir)
 test_cats_dir = os.path.join(test_dir, 'cats')
-os.mkdir(test_cats_dir)
 test_dogs_dir = os.path.join(test_dir, 'dogs')
-os.mkdir(test_dogs_dir)
 
 if create_data_dir:
+    os.mkdir(base_dir)
+    os.mkdir(train_dir)
+    os.mkdir(validation_dir)
+    os.mkdir(test_dir)
+    os.mkdir(train_cats_dir)
+    os.mkdir(train_dogs_dir)
+    os.mkdir(validation_cats_dir)
+    os.mkdir(validation_dogs_dir)
+    os.mkdir(test_cats_dir)
+    os.mkdir(test_dogs_dir)
     # 将前1000张猫的图像复制到 train_cats_dir
     fnames = ['cat.{}.jpg'.format(i) for i in range(1000)]
     for fname in fnames:
@@ -128,8 +130,8 @@ if the_first_exp:
     model.save('cats_and_dogs_small_1.h5')
 
     # 绘制训练过程中的损失曲线和精度曲线
-    acc = history.history['acc']
-    val_acc = history.history['val_acc']
+    acc = history.history['accuracy']
+    val_acc = history.history['val_accuracy']
     loss = history.history['loss']
     val_loss = history.history['val_loss']
     epochs = range(1, len(acc) + 1)
@@ -214,8 +216,8 @@ if the_second_exp:
 
     # 绘制训练过程中的损失曲线和精度曲线
     plt.clf()
-    acc = history.history['acc']
-    val_acc = history.history['val_acc']
+    acc = history.history['accuracy']
+    val_acc = history.history['val_accuracy']
     loss = history.history['loss']
     val_loss = history.history['val_loss']
     epochs = range(1, len(acc) + 1)
