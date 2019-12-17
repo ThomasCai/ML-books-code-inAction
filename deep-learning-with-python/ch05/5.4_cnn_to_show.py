@@ -122,7 +122,6 @@ plt.imshow(results)
 
 # 5.4.3 可视化类激活的热力图
 from keras.applications.vgg16 import VGG16
-from keras.preprocessing import image
 from keras.applications.vgg16 import preprocess_input, decode_predictions
 import numpy as np
 model = VGG16(weights='imagenet')
