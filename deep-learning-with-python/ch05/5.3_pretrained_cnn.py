@@ -1,4 +1,4 @@
-from keras.application import VGG16
+from keras.applications import VGG16
 import os
 import numpy as np
 from keras.preprocessing.image import ImageDataGenerator
@@ -13,7 +13,7 @@ from keras import optimizers
 conv_base = VGG16(weights='imagenet', include_top=False, input_shape=(150, 150, 3))
 
 # 不使用数据增强的快速特征提取
-base_dir = '/Users/fchollet/Downloads/cats_and_dogs_small'
+base_dir = '/home/thomas/Downloads/keras_ch05_data/cats_and_dogs_small'
 train_dir = os.path.join(base_dir, 'train')
 validation_dir = os.path.join(base_dir, 'validation')
 test_dir = os.path.join(base_dir, 'test')
@@ -173,14 +173,15 @@ plt.title('Training and validation loss')
 plt.legend()
 plt.show()
 
+
 def smooth_curve(points, factor=0.8):
     smoothed_points = []
     for point in points:
-    if smoothed_points:
-        previous = smoothed_points[-1]
-        smoothed_points.append(previous * factor + point * (1 - factor))
-    else:
-        smoothed_points.append(point)
+        if smoothed_points:
+            previous = smoothed_points[-1]
+            smoothed_points.append(previous * factor + point * (1 - factor))
+        else:
+            smoothed_points.append(point)
     return smoothed_points
 plt.plot(epochs, smooth_curve(acc), 'bo', label='Smoothed training acc')
 
