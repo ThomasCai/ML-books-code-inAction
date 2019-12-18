@@ -7,9 +7,9 @@ from keras.preprocessing.image import ImageDataGenerator
 import matplotlib.pyplot as plt
 
 create_data_dir = False  # 创建文件夹，只需运行一次，注意路径
-the_first_exp = True  # 将猫狗分类的小型卷积神经网络实例化
+the_first_exp = False  # 将猫狗分类的小型卷积神经网络实例化
 data_improve_example = False
-the_second_exp = False  # 定义一个包含 dropout 的新卷积神经网络 and include data improve
+the_second_exp = True  # 定义一个包含 dropout 的新卷积神经网络 and include data improve
 
 # 原始数据集解压目录的路径
 original_dataset_dir = '/home/thomas/Downloads/keras_ch05_data/kaggle_original_data'
