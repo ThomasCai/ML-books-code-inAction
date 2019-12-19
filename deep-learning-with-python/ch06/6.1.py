@@ -2,6 +2,7 @@ import numpy as np
 import string
 from keras.preprocessing.text import Tokenizer
 
+# 6.1.1 单词和字符的 one-hot 编码
 # 单词级的 one-hot 编码(简单示例)
 samples = ['The cat sat on the mat.', 'The dog ate my homework.']
 token_index = {}
@@ -29,14 +30,6 @@ for i, sample in enumerate(samples):
         results[i, j, index] = 1.
 print("字符级的 one-hot 编码(简单示例): ", results)
 
-samples = ['The cat sat on the mat.', 'The dog ate my homework.']
-tokenizer = Tokenizer(num_words=1000)
-tokenizer.fit_on_texts(samples)
-sequences = tokenizer.texts_to_sequences(samples)
-one_hot_results = tokenizer.texts_to_matrix(samples, mode='binary')
-word_index = tokenizer.word_index
-print('Found %s unique tokens.' % len(word_index))
-
 # 用 Keras 实现单词级的 one-hot 编码
 samples = ['The cat sat on the mat.', 'The dog ate my homework.']
 tokenizer = Tokenizer(num_words=1000)
@@ -44,7 +37,7 @@ tokenizer.fit_on_texts(samples)
 sequences = tokenizer.texts_to_sequences(samples)
 one_hot_results = tokenizer.texts_to_matrix(samples, mode='binary')
 word_index = tokenizer.word_index
-print('Found %s unique tokens.' % len(word_index))
+print('Found %s unique tokens.' % len(word_index))  # 9 cause keras can combine upper and lower.
 
 # 使用散列技巧的单词级的 one-hot 编码(简单示例)
 samples = ['The cat sat on the mat.', 'The dog ate my homework.']
@@ -56,3 +49,5 @@ for i, sample in enumerate(samples):
         index = abs(hash(word)) % dimensionality
         results[i, j, index] = 1.
 print("使用散列技巧的单词级的 one-hot 编码(简单示例): ", results)
+
+# 6.1.2 使用词嵌入
