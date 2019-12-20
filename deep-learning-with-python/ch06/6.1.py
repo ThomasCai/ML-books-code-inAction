@@ -7,6 +7,7 @@ from keras.models import Sequential
 from keras.layers import Flatten, Dense, Embedding
 import os
 from keras.preprocessing.sequence import pad_sequences
+import matplotlib.pyplot as plt
 
 need_train = False
 
@@ -135,7 +136,123 @@ x_train = data[:training_samples]
 y_train = labels[:training_samples]
 x_val = data[training_samples: training_samples + validation_samples]
 y_val = labels[training_samples: training_samples + validation_samples]
-print(x_train)
-print(y_train)
 
+# 4. 对嵌入进行预处理
 # 解析 GloVe 词嵌入文件
+glove_dir = '/home/thomas/Downloads/glove.6B'
+embeddings_index = {}
+f = open(os.path.join(glove_dir, 'glove.6B.100d.txt'))
+for line in f:
+    values = line.split()
+    word = values[0]
+    coefs = np.asarray(values[1:], dtype='float32')
+    embeddings_index[word] = coefs
+f.close()
+print('Found %s word vectors.' % len(embeddings_index))
+
+# 准备 GloVe 词嵌入矩阵
+embedding_dim = 100
+embedding_matrix = np.zeros((max_words, embedding_dim))
+for word, i in word_index.items():
+    if i < max_words:
+        embedding_vector = embeddings_index.get(word)
+        if embedding_vector is not None:
+            embedding_matrix[i] = embedding_vector
+
+# 模型定义
+model = Sequential()
+model.add(Embedding(max_words, embedding_dim, input_length=maxlen))
+model.add(Flatten())
+model.add(Dense(32, activation='relu'))
+model.add(Dense(1, activation='sigmoid'))
+model.summary()
+
+# 将预训练的词嵌入加载到 Embedding 层中
+model.layers[0].set_weights([embedding_matrix])
+model.layers[0].trainable = False
+
+model.compile(optimizer='rmsprop',
+              loss='binary_crossentropy',
+              metrics=['acc'])
+history = model.fit(x_train, y_train,
+                    epochs=10,
+                    batch_size=32,
+                    validation_data=(x_val, y_val))
+model.save_weights('pre_trained_glove_model.h5')
+
+# 绘制结果
+print(history.history.keys())
+acc = history.history['acc']
+val_acc = history.history['val_acc']
+loss = history.history['loss']
+val_loss = history.history['val_loss']
+epochs = range(1, len(acc) + 1)
+plt.plot(epochs, acc, 'bo', label='Training acc')
+plt.plot(epochs, val_acc, 'b', label='Validation acc')
+plt.title('Training and validation accuracy')
+plt.legend()
+
+plt.figure()
+plt.plot(epochs, loss, 'bo', label='Training loss')
+plt.plot(epochs, val_loss, 'b', label='Validation loss')
+plt.title('Training and validation loss')
+plt.legend()
+plt.show()
+
+#  在不使用预训练词嵌入的情况下,训练相同的模型
+model = Sequential()
+model.add(Embedding(max_words, embedding_dim, input_length=maxlen))
+model.add(Flatten())
+model.add(Dense(32, activation='relu'))
+model.add(Dense(1, activation='sigmoid'))
+model.summary()
+model.compile(optimizer='rmsprop',
+              loss='binary_crossentropy',
+              metrics=['acc'])
+history = model.fit(x_train, y_train,
+                    epochs=10,
+                    batch_size=32,
+                    validation_data=(x_val, y_val))
+
+# 绘制结果
+print(history.history.keys())
+acc = history.history['acc']
+val_acc = history.history['val_acc']
+loss = history.history['loss']
+val_loss = history.history['val_loss']
+epochs = range(1, len(acc) + 1)
+plt.plot(epochs, acc, 'bo', label='Training acc')
+plt.plot(epochs, val_acc, 'b', label='Validation acc')
+plt.title('Training and validation accuracy')
+plt.legend()
+
+plt.figure()
+plt.plot(epochs, loss, 'bo', label='Training loss')
+plt.plot(epochs, val_loss, 'b', label='Validation loss')
+plt.title('Training and validation loss')
+plt.legend()
+plt.show()
+
+# 对测试集数据进行分词
+test_dir = os.path.join(imdb_dir, 'test')
+labels = []
+texts = []
+for label_type in ['neg', 'pos']:
+    dir_name = os.path.join(test_dir, label_type)
+    for fname in sorted(os.listdir(dir_name)):
+        if fname[-4:] == '.txt':
+            f = open(os.path.join(dir_name, fname))
+            texts.append(f.read())
+            f.close()
+            if label_type == 'neg':
+                labels.append(0)
+            else:
+                labels.append(1)
+sequences = tokenizer.texts_to_sequences(texts)
+x_test = pad_sequences(sequences, maxlen=maxlen)
+y_test = np.asarray(labels)
+
+# 在测试集上评估模型
+model.load_weights('pre_trained_glove_model.h5')
+result = model.evaluate(x_test, y_test)
+print(result)
