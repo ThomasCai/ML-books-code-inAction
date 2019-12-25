@@ -1,6 +1,10 @@
 import os
 import numpy as np
 from matplotlib import pyplot as plt
+from keras.models import Sequential
+from keras import layers
+from keras.optimizers import RMSprop
+import matplotlib.pyplot as plt
 
 
 data_dir = '/home/thomas/Downloads/keras_ch06_data/jena_climate'
@@ -106,3 +110,142 @@ evaluate_naive_method()
 # 将 MAE 转换成摄氏温度误差
 celsius_mae = 0.29 * std[1]
 print("摄氏温度误差: ", celsius_mae)
+
+# 一种基本的机器学习方法
+model = Sequential()
+model.add(layers.Flatten(input_shape=(lookback // step, float_data.shape[-1])))
+model.add(layers.Dense(32, activation='relu'))
+model.add(layers.Dense(1))
+model.compile(optimizer=RMSprop(), loss='mae')
+history = model.fit_generator(train_gen,
+steps_per_epoch=500,
+epochs=20,
+validation_data=val_gen,
+validation_steps=val_steps)
+
+# 绘制结果
+loss = history.history['loss']
+val_loss = history.history['val_loss']
+epochs = range(1, len(loss) + 1)
+plt.figure()
+plt.plot(epochs, loss, 'bo', label='Training loss')
+plt.plot(epochs, val_loss, 'b', label='Validation loss')
+plt.title('Training and validation loss')
+plt.legend()
+plt.show()
+
+# 训练并评估一个基于GRU 的模型
+model = Sequential()
+model.add(layers.GRU(32, input_shape=(None, float_data.shape[-1])))
+model.add(layers.Dense(1))
+model.compile(optimizer=RMSprop(), loss='mae')
+history = model.fit_generator(train_gen,
+steps_per_epoch=500,
+epochs=20,
+validation_data=val_gen,
+validation_steps=val_steps)
+# 绘制结果
+loss = history.history['loss']
+val_loss = history.history['val_loss']
+epochs = range(1, len(loss) + 1)
+plt.figure()
+plt.plot(epochs, loss, 'bo', label='Training loss')
+plt.plot(epochs, val_loss, 'b', label='Validation loss')
+plt.title('Training and validation loss')
+plt.legend()
+plt.show()
+
+# 训练并评估一个使用dropout 正则化的基于GRU 的模型
+model = Sequential()
+model.add(layers.GRU(32,
+dropout=0.2,
+recurrent_dropout=0.2,
+input_shape=(None, float_data.shape[-1])))
+model.add(layers.Dense(1))
+model.compile(optimizer=RMSprop(), loss='mae')
+history = model.fit_generator(train_gen,
+steps_per_epoch=500,
+epochs=40,
+validation_data=val_gen,
+validation_steps=val_steps)
+# 绘制结果
+loss = history.history['loss']
+val_loss = history.history['val_loss']
+epochs = range(1, len(loss) + 1)
+plt.figure()
+plt.plot(epochs, loss, 'bo', label='Training loss')
+plt.plot(epochs, val_loss, 'b', label='Validation loss')
+plt.title('Training and validation loss')
+plt.legend()
+plt.show()
+
+# 训练并评估一个使用dropout 正则化的堆叠GRU 模型
+model = Sequential()
+model.add(layers.GRU(32,
+dropout=0.1,
+recurrent_dropout=0.5,
+return_sequences=True,
+input_shape=(None, float_data.shape[-1])))
+model.add(layers.GRU(64, activation='relu',
+dropout=0.1,
+recurrent_dropout=0.5))
+model.add(layers.Dense(1))
+model.compile(optimizer=RMSprop(), loss='mae')
+history = model.fit_generator(train_gen,
+steps_per_epoch=500,
+epochs=40,
+validation_data=val_gen,
+validation_steps=val_steps)
+# 绘制结果
+loss = history.history['loss']
+val_loss = history.history['val_loss']
+epochs = range(1, len(loss) + 1)
+plt.figure()
+plt.plot(epochs, loss, 'bo', label='Training loss')
+plt.plot(epochs, val_loss, 'b', label='Validation loss')
+plt.title('Training and validation loss')
+plt.legend()
+plt.show()
+
+# 训练并评估一个双向LSTM
+model = Sequential()
+model.add(layers.Embedding(max_features, 32))
+model.add(layers.Bidirectional(layers.LSTM(32)))
+model.add(layers.Dense(1, activation='sigmoid'))
+model.compile(optimizer='rmsprop', loss='binary_crossentropy', metrics=['acc'])
+history = model.fit(x_train, y_train,
+epochs=10,
+batch_size=128,
+validation_split=0.2)
+# 绘制结果
+loss = history.history['loss']
+val_loss = history.history['val_loss']
+epochs = range(1, len(loss) + 1)
+plt.figure()
+plt.plot(epochs, loss, 'bo', label='Training loss')
+plt.plot(epochs, val_loss, 'b', label='Validation loss')
+plt.title('Training and validation loss')
+plt.legend()
+plt.show()
+
+# 训练一个双向GRU
+model = Sequential()
+model.add(layers.Bidirectional(
+layers.GRU(32), input_shape=(None, float_data.shape[-1])))
+model.add(layers.Dense(1))
+model.compile(optimizer=RMSprop(), loss='mae')
+history = model.fit_generator(train_gen,
+steps_per_epoch=500,
+epochs=40,
+validation_data=val_gen,
+validation_steps=val_steps)
+# 绘制结果
+loss = history.history['loss']
+val_loss = history.history['val_loss']
+epochs = range(1, len(loss) + 1)
+plt.figure()
+plt.plot(epochs, loss, 'bo', label='Training loss')
+plt.plot(epochs, val_loss, 'b', label='Validation loss')
+plt.title('Training and validation loss')
+plt.legend()
+plt.show()
