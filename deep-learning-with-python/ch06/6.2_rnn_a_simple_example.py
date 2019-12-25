@@ -23,5 +23,6 @@ for input_t in inputs:
     state_t = output_t
 # 最终输出是一个形状为(timesteps,output_features) 的二维张量
 final_output_sequence = np.stack(successive_outputs, axis=0)
+print(final_output_sequence.shape)
 
 

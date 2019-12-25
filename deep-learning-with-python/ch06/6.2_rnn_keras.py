@@ -1,18 +1,18 @@
-from keras.modls import Sequential
-from keras.layers import Embedding, SimpleRNN
+from keras.models import Sequential
+from keras.layers import Embedding, SimpleRNN, Dense
 from keras.datasets import imdb
 from keras.preprocessing import sequence
 import matplotlib.pyplot as plt
 
 
-show_rnn_layer = True
+show_rnn_layer = False
 
 if show_rnn_layer:
     model = Sequential()
     model.add(Embedding(10000, 32))
-    model.add(SimpleRNN(32, return_squences=True))
-    model.add(SimpleRNN(32, return_squences=True))
-    model.add(SimpleRNN(32, return_squences=True))
+    model.add(SimpleRNN(32, return_sequences=True))
+    model.add(SimpleRNN(32, return_sequences=True))
+    model.add(SimpleRNN(32, return_sequences=True))
     model.add(SimpleRNN(32))
     model.summary()
 
