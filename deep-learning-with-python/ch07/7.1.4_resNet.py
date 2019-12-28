@@ -45,9 +45,12 @@ y = model(x)
 
 y1, y2 = model([x1, x2])
 
+# 重复调用 如：双摄像头
+# 图像处理基础模型是Xception 网络（只包括卷积基）
 xception_base = applications.Xception(weights=None,include_top=False)
-left_input = Input(shape=(250, 250, 3))
+left_input = Input(shape=(250, 250, 3)) # 输入是250×250 的RGB 图像
 right_input = Input(shape=(250, 250, 3))
-left_features = xception_base(left_input)
+left_features = xception_base(left_input) # 对相同的视觉模型调用两次
 right_input = xception_base(right_input)
+# 合并后的特征包含来自左右两个视觉输入中的信息
 merged_features = layers.concatenate([left_features, right_input], axis=-1)
