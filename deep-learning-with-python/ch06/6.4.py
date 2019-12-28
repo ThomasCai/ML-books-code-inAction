@@ -191,6 +191,7 @@ test_gen = generator(float_data,
 val_steps = (300000 - 200001 - lookback) // 128
 test_steps = (len(float_data) - 300001 - lookback) // 128
 
+# 结合一维卷积基和GRU 层的模型
 model = Sequential()
 model.add(layers.Conv1D(32, 5, activation='relu',
                         input_shape=(None, float_data.shape[-1])))
