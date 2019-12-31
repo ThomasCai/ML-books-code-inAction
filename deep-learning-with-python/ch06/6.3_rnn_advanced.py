@@ -7,13 +7,13 @@ import matplotlib.pyplot as plt
 from keras.datasets import imdb
 from keras.preprocessing import sequence
 
-the_base_method = True
-base_GRU_model = True
+the_base_method = False
+base_GRU_model = False
 dropout_gru = True
 dropout_multi_gru = True
-reverse_lstm = True
-double_lstm = True
-double_GRU = True
+reverse_lstm = False
+double_lstm = False
+double_GRU = False
 
 
 data_dir = '/home/thomas/Downloads/keras_ch06_data/jena_climate'
