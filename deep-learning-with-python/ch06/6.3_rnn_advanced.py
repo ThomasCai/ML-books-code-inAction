@@ -6,11 +6,12 @@ from keras.optimizers import RMSprop
 import matplotlib.pyplot as plt
 from keras.datasets import imdb
 from keras.preprocessing import sequence
+import keras
 
-the_base_method = False
+the_base_method = True
 base_GRU_model = False
-dropout_gru = True
-dropout_multi_gru = True
+dropout_gru = False
+dropout_multi_gru = False
 reverse_lstm = False
 double_lstm = False
 double_GRU = False

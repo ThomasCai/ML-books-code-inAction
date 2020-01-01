@@ -29,13 +29,14 @@ callbacks = [
         log_dir='my_log_dir',
         histogram_freq=1,
         embeddings_freq=1,
+        embeddings_data=x_train[:100]
     )
-]
+]  # there is a fault in the book. I add embeddings_data for running successfully.
 history = model.fit(x_train, y_train,
                     epochs=20,
                     batch_size=128,
                     validation_split=0.2,
                     callbacks=callbacks)
 
-plot_model(model, to_file='model.png')
-plot_model(model, show_shapes=True, to_file='model.png')
+# plot_model(model, to_file='model.png')
+# plot_model(model, show_shapes=True, to_file='model.png')
