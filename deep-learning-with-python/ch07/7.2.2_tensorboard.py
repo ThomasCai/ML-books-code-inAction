@@ -3,6 +3,7 @@ from keras import layers
 from keras.datasets import imdb
 from keras.preprocessing import sequence
 from keras.utils import plot_model
+from time import time
 
 max_features = 2000
 max_len = 500
@@ -29,14 +30,18 @@ callbacks = [
         log_dir='my_log_dir',
         histogram_freq=1,
         embeddings_freq=1,
-        embeddings_data=x_train[:100]
+        embeddings_data=x_train
     )
 ]  # there is a fault in the book. I add embeddings_data for running successfully.
+begin_time = time()
 history = model.fit(x_train, y_train,
-                    epochs=20,
+                    epochs=4,
                     batch_size=128,
                     validation_split=0.2,
                     callbacks=callbacks)
+end_time = time()
+print(len(x_train))
+print("run time: ", end_time-begin_time)
 
 # plot_model(model, to_file='model.png')
 # plot_model(model, show_shapes=True, to_file='model.png')
